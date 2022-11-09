@@ -4,7 +4,7 @@ const loadProducts = (searchText,status) =>{
     .then(res => res.json())
     .then(data => displayProducts(data.data , status ))
 }
-const displayProducts = (status, products) => {
+const displayProducts = (products , status) => {
     const productContainer = document.getElementById('products-container');
     productContainer.textContent = " ";
     // display 10 specific products only
@@ -32,9 +32,10 @@ const displayProducts = (status, products) => {
        <div class="card p-4">
             <img src="${product.image}"class="card-img-top" alt="">
             <div class="card-body">
-               <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+              <h5 class="card-title">${product.phone_name}</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
                </p>
-               <button onclick="loadProductsDetails('${product.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
+                <button onclick="loadProductsDetails('${product.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
             <div>  
        </div> 
         `;
@@ -61,13 +62,13 @@ document.getElementById("search-field").addEventListener('keypress',function(ele
       searchProcess(10);
     }  
 })
-const toggleSpinner = () =>{
+const toggleSpinner = (isLoading) =>{
     const loaderSection = document.getElementById("loader");
-    if(loaderSection){
-        loadProducts.classList.remove('d-none');
+    if(isLoading){
+        loaderSection.classList.remove('d-none');
     }
     else{
-        loadProducts.classList.add('d-none');
+        loaderSection.classList.add('d-none');
     }
 }
 
@@ -76,7 +77,7 @@ document.getElementById('btn-show-all').addEventListener('click',function(){
     searchProcess();
 })
 const loadProductsDetails = (id) =>{
-   const url =`https://openapi.programming-hero.com/api/phones/${id}`
+   const url =`https://openapi.programming-hero.com/api/phone/${id}`
    fetch(url)
    .then(res => res.json())
    .then(data => displayProductsDetail(data.data))
@@ -85,15 +86,15 @@ const displayProductsDetail = (products) =>{
    console.log(products)
    const modalTitle = document.getElementById('productDetailModalLabel');
    modalTitle.innerText = products.name;
-   const productsDetail = document.getElementById("products-details")
+   const loadProuctsDetails = document.getElementById("products-details")
 //    const modalTitle = document.getElementById()
 //    console.log(phone.mainFeatures.sensors[0]); // to see out put
-    loadPhoneDetails.innerHTML = `
-    <p>Release Date: ${products.releaseDate ? products.releaseDate : 'No Release Date Found'}</p>
+    loadProuctsDetails.innerHTML = `
+        <p>Release Date: ${products.releaseDate ? products.releaseDate : 'No Release Date Found'}</p>
         <p>Storage: ${products.mainFeatures ? products.mainFeatures.storage : 'No Storage Information '}</p>
         <p>Others: ${products.others ? products.others.Bluetooth : 'No Bluetooth Information'}</p>
-        <p>Sensor: ${products.mainFeatures.sensors ? products.mainFeatures.sensors[0] : 'no sensor'}</p>
+        <p>Sensor: ${products.mainFeatures.sensor ? products.mainFeatures.sensors[0] : 'no sensor'}</p>
     `
 }
-loadPhones('apple');
+loadProducts('apple');
 
