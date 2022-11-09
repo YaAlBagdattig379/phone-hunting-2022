@@ -34,7 +34,7 @@ const displayProducts = (status, products) => {
             <div class="card-body">
                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
                </p>
-               <button onclick="loadPhoneDetails('${product.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
+               <button onclick="loadProductsDetails('${product.slug}')" href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
             <div>  
        </div> 
         `;
@@ -72,4 +72,28 @@ const toggleSpinner = () =>{
 }
 
 // not the best way to load "show All"
-document.getElementById()
+document.getElementById('btn-show-all').addEventListener('click',function(){
+    searchProcess();
+})
+const loadProductsDetails = (id) =>{
+   const url =`https://openapi.programming-hero.com/api/phones/${id}`
+   fetch(url)
+   .then(res => res.json())
+   .then(data => displayProductsDetail(data.data))
+}
+const displayProductsDetail = (products) =>{
+   console.log(products)
+   const modalTitle = document.getElementById('productDetailModalLabel');
+   modalTitle.innerText = products.name;
+   const productsDetail = document.getElementById("products-details")
+//    const modalTitle = document.getElementById()
+//    console.log(phone.mainFeatures.sensors[0]); // to see out put
+    loadPhoneDetails.innerHTML = `
+    <p>Release Date: ${products.releaseDate ? products.releaseDate : 'No Release Date Found'}</p>
+        <p>Storage: ${products.mainFeatures ? products.mainFeatures.storage : 'No Storage Information '}</p>
+        <p>Others: ${products.others ? products.others.Bluetooth : 'No Bluetooth Information'}</p>
+        <p>Sensor: ${products.mainFeatures.sensors ? products.mainFeatures.sensors[0] : 'no sensor'}</p>
+    `
+}
+loadPhones('apple');
+
