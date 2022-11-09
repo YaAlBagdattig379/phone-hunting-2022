@@ -1,9 +1,11 @@
+//  fetch use to load data from  openapi. 
 const loadProducts = (searchText,status) =>{
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     fetch(url)
     .then(res => res.json())
     .then(data => displayProducts(data.data , status ))
 }
+
 const displayProducts = (products , status) => {
     const productContainer = document.getElementById('products-container');
     productContainer.textContent = " ";
@@ -50,7 +52,6 @@ const searchProcess = (status) => {
     const searchField = document.getElementById('search-field');
     const searchInputText = searchField.value;
     loadProducts(searchInputText , status);
-    // console.log('dlfkjdslf')
 }
 // handle search button click 
 document.getElementById('btn-search').addEventListener('click',function(){
@@ -74,7 +75,7 @@ const toggleSpinner = (isLoading) =>{
 
 // not the best way to load "show All"
 document.getElementById('btn-show-all').addEventListener('click',function(){
-    searchProcess();
+    searchProcess(10);
 })
 const loadProductsDetails = (id) =>{
    const url =`https://openapi.programming-hero.com/api/phone/${id}`
@@ -87,7 +88,6 @@ const displayProductsDetail = (products) =>{
    const modalTitle = document.getElementById('productDetailModalLabel');
    modalTitle.innerText = products.name;
    const loadProuctsDetails = document.getElementById("products-details")
-//    const modalTitle = document.getElementById()
 //    console.log(phone.mainFeatures.sensors[0]); // to see out put
     loadProuctsDetails.innerHTML = `
         <p>Release Date: ${products.releaseDate ? products.releaseDate : 'No Release Date Found'}</p>
