@@ -18,7 +18,7 @@ const displayProducts = (products , status) => {
     }
     // display no found products message 
     const noProduct = document.getElementById("no-found-message");
-    if(noProduct.length === 0){
+    if(products.length === 0){
         noProduct.classList.remove('d-none');
     }
     else{
