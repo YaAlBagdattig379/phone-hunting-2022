@@ -1,8 +1,8 @@
-const loadProducts = (searchText) =>{
+const loadProducts = (searchText,status) =>{
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     fetch(url)
     .then(res => res.json())
-    .then(data => displayProducts(data.status , data.data ))
+    .then(data => displayProducts(data.data , status ))
 }
 const displayProducts = (status, products) => {
     const productContainer = document.getElementById('products-container');
@@ -44,8 +44,32 @@ const displayProducts = (status, products) => {
     // stop spinner or loader
     toggleSpinner(false);
 }
-const searchPrecess = (status) => {
-    toggleSpinner(false)
-    console.log('dlfkjdslf')
+const searchProcess = (status) => {
+    toggleSpinner(true);
+    const searchField = document.getElementById('search-field');
+    const searchInputText = searchField.value;
+    loadProducts(searchInputText , status);
+    // console.log('dlfkjdslf')
 }
-loadProducts('phone')
+// handle search button click 
+document.getElementById('btn-search').addEventListener('click',function(){
+    searchProcess(10) ; 
+})
+// search input field enter key handler 
+document.getElementById("search-field").addEventListener('keypress',function(ele){
+    if(ele.key === 'Enter'){
+      searchProcess(10);
+    }  
+})
+const toggleSpinner = () =>{
+    const loaderSection = document.getElementById("loader");
+    if(loaderSection){
+        loadProducts.classList.remove('d-none');
+    }
+    else{
+        loadProducts.classList.add('d-none');
+    }
+}
+
+// not the best way to load "show All"
+document.getElementById()
